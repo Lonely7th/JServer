@@ -1,0 +1,151 @@
+2018/12/25 13:06:01.555 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 13:10:34.311 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 13:11:27.220 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 13:16:37.634 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 13:17:44.633 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 13:24:49.462 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 13:26:26.789 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 13:27:28.512 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 13:40:40.354 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 13:42:07.504 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 17:09:48.572 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 17:47:32.084 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 17:48:03.465 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 17:48:06.550 [C] [asm_amd64.s:522]  the request url is  /api/v1/login
+2018/12/25 17:48:06.550 [C] [asm_amd64.s:522]  Handler crashed with error <Ormer> table: `ApiJServer/models.User` not found, make sure it was registered with `RegisterModel()`
+2018/12/25 17:48:06.550 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/25 17:48:06.550 [C] [asm_amd64.s:522]  D:/Go/src/runtime/panic.go:513
+2018/12/25 17:48:06.550 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:113
+2018/12/25 17:48:06.550 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:127
+2018/12/25 17:48:06.550 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:50
+2018/12/25 17:48:06.550 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/controllers/user.go:105
+2018/12/25 17:48:06.550 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/25 17:48:06.550 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:447
+2018/12/25 17:48:06.551 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:308
+2018/12/25 17:48:06.551 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/router.go:852
+2018/12/25 17:48:06.551 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:2741
+2018/12/25 17:48:06.551 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:1847
+2018/12/25 17:48:06.551 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:1333
+2018/12/25 17:48:06.553 [server.go:2977]  [HTTP] http: multiple response.WriteHeader calls
+2018/12/25 17:48:22.576 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 17:48:26.306 [C] [asm_amd64.s:522]  the request url is  /api/v1/login
+2018/12/25 17:48:26.306 [C] [asm_amd64.s:522]  Handler crashed with error <Ormer> table: `ApiJServer/models.User` not found, make sure it was registered with `RegisterModel()`
+2018/12/25 17:48:26.306 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/25 17:48:26.306 [C] [asm_amd64.s:522]  D:/Go/src/runtime/panic.go:513
+2018/12/25 17:48:26.306 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:113
+2018/12/25 17:48:26.306 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:127
+2018/12/25 17:48:26.306 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:50
+2018/12/25 17:48:26.306 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/controllers/user.go:105
+2018/12/25 17:48:26.307 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/25 17:48:26.307 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:447
+2018/12/25 17:48:26.307 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:308
+2018/12/25 17:48:26.307 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/router.go:852
+2018/12/25 17:48:26.307 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:2741
+2018/12/25 17:48:26.307 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:1847
+2018/12/25 17:48:26.307 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:1333
+2018/12/25 17:48:26.309 [server.go:2977]  [HTTP] http: multiple response.WriteHeader calls
+2018/12/25 17:49:06.018 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 17:49:38.620 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 17:53:36.339 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 17:53:43.157 [C] [asm_amd64.s:522]  the request url is  /api/v1/login
+2018/12/25 17:53:43.157 [C] [asm_amd64.s:522]  Handler crashed with error <Ormer> table: `ApiJServer/models.User` not found, make sure it was registered with `RegisterModel()`
+2018/12/25 17:53:43.157 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/25 17:53:43.157 [C] [asm_amd64.s:522]  D:/Go/src/runtime/panic.go:513
+2018/12/25 17:53:43.157 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:113
+2018/12/25 17:53:43.157 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:127
+2018/12/25 17:53:43.157 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:34
+2018/12/25 17:53:43.157 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:45
+2018/12/25 17:53:43.157 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/controllers/user.go:105
+2018/12/25 17:53:43.157 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/25 17:53:43.157 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:447
+2018/12/25 17:53:43.157 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:308
+2018/12/25 17:53:43.157 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/router.go:852
+2018/12/25 17:53:43.157 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:2741
+2018/12/25 17:53:43.157 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:1847
+2018/12/25 17:53:43.157 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:1333
+2018/12/25 17:53:43.158 [server.go:2977]  [HTTP] http: multiple response.WriteHeader calls
+2018/12/25 17:54:56.086 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 17:55:02.480 [C] [asm_amd64.s:522]  the request url is  /api/v1/login
+2018/12/25 17:55:02.480 [C] [asm_amd64.s:522]  Handler crashed with error <Ormer> table: `ApiJServer/models.User` not found, make sure it was registered with `RegisterModel()`
+2018/12/25 17:55:02.480 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/25 17:55:02.480 [C] [asm_amd64.s:522]  D:/Go/src/runtime/panic.go:513
+2018/12/25 17:55:02.480 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:113
+2018/12/25 17:55:02.480 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:127
+2018/12/25 17:55:02.480 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:34
+2018/12/25 17:55:02.480 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:45
+2018/12/25 17:55:02.480 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/controllers/user.go:105
+2018/12/25 17:55:02.480 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/25 17:55:02.480 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:447
+2018/12/25 17:55:02.480 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:308
+2018/12/25 17:55:02.480 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/router.go:852
+2018/12/25 17:55:02.480 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:2741
+2018/12/25 17:55:02.480 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:1847
+2018/12/25 17:55:02.480 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:1333
+2018/12/25 17:55:02.483 [server.go:2977]  [HTTP] http: multiple response.WriteHeader calls
+2018/12/25 17:56:17.225 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 17:58:01.152 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 18:01:48.580 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 18:02:39.494 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 18:03:03.567 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 18:03:59.938 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 18:06:00.325 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 18:06:52.162 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 18:08:50.055 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 18:08:53.163 [C] [asm_amd64.s:522]  the request url is  /api/v1/login
+2018/12/25 18:08:53.163 [C] [asm_amd64.s:522]  Handler crashed with error <Ormer> table: `.` not found, make sure it was registered with `RegisterModel()`
+2018/12/25 18:08:53.163 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/25 18:08:53.163 [C] [asm_amd64.s:522]  D:/Go/src/runtime/panic.go:513
+2018/12/25 18:08:53.163 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:113
+2018/12/25 18:08:53.163 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:127
+2018/12/25 18:08:53.163 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:38
+2018/12/25 18:08:53.163 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:55
+2018/12/25 18:08:53.163 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/controllers/user.go:105
+2018/12/25 18:08:53.163 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/25 18:08:53.163 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:447
+2018/12/25 18:08:53.163 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:308
+2018/12/25 18:08:53.163 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/router.go:852
+2018/12/25 18:08:53.163 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:2741
+2018/12/25 18:08:53.163 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:1847
+2018/12/25 18:08:53.163 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:1333
+2018/12/25 18:08:53.164 [server.go:2977]  [HTTP] http: multiple response.WriteHeader calls
+2018/12/25 18:10:16.066 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 18:10:38.783 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 18:13:57.284 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 18:13:59.230 [C] [asm_amd64.s:522]  the request url is  /api/v1/login
+2018/12/25 18:13:59.230 [C] [asm_amd64.s:522]  Handler crashed with error <Ormer> table: `.` not found, make sure it was registered with `RegisterModel()`
+2018/12/25 18:13:59.230 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/25 18:13:59.230 [C] [asm_amd64.s:522]  D:/Go/src/runtime/panic.go:513
+2018/12/25 18:13:59.230 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:113
+2018/12/25 18:13:59.230 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:127
+2018/12/25 18:13:59.230 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:37
+2018/12/25 18:13:59.230 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:54
+2018/12/25 18:13:59.230 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/controllers/user.go:105
+2018/12/25 18:13:59.230 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/25 18:13:59.230 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:447
+2018/12/25 18:13:59.230 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:308
+2018/12/25 18:13:59.230 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/router.go:852
+2018/12/25 18:13:59.230 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:2741
+2018/12/25 18:13:59.230 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:1847
+2018/12/25 18:13:59.230 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:1333
+2018/12/25 18:13:59.235 [server.go:2977]  [HTTP] http: multiple response.WriteHeader calls
+2018/12/25 18:15:49.832 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 18:15:51.502 [C] [asm_amd64.s:522]  the request url is  /api/v1/login
+2018/12/25 18:15:51.502 [C] [asm_amd64.s:522]  Handler crashed with error <Ormer> table: `.` not found, make sure it was registered with `RegisterModel()`
+2018/12/25 18:15:51.502 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/25 18:15:51.502 [C] [asm_amd64.s:522]  D:/Go/src/runtime/panic.go:513
+2018/12/25 18:15:51.502 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:113
+2018/12/25 18:15:51.502 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:127
+2018/12/25 18:15:51.502 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:37
+2018/12/25 18:15:51.502 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:54
+2018/12/25 18:15:51.502 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/controllers/user.go:105
+2018/12/25 18:15:51.502 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/25 18:15:51.502 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:447
+2018/12/25 18:15:51.502 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:308
+2018/12/25 18:15:51.502 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/router.go:852
+2018/12/25 18:15:51.502 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:2741
+2018/12/25 18:15:51.502 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:1847
+2018/12/25 18:15:51.502 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:1333
+2018/12/25 18:15:51.503 [server.go:2977]  [HTTP] http: multiple response.WriteHeader calls
+2018/12/25 18:20:28.717 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 18:20:54.376 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/25 18:21:49.916 [I] [asm_amd64.s:1333]  http server Running on http://:8080
