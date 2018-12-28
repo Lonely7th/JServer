@@ -3,21 +3,23 @@ package main
 import (
 	_ "ApiJServer/routers"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func init(){
+func init() {
 	InitDataBase()
+	InitLoger()
 }
 
 func main() {
 	if beego.BConfig.RunMode == "dev" {
 		beego.BConfig.WebConfig.DirectoryIndex = true
-		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"//http://127.0.0.1:8080/swagger/
+		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger" //http://127.0.0.1:8080/swagger/
 	}
 
-	beego.SetLogger("file", `{"filename":"logs/test.log"}`)
+	//beego.SetLogger("file", `{"filename":"logs/test.log"}`)
 	beego.Run()
 
 }
@@ -38,4 +40,11 @@ func InitDataBase() {
 
 	_ = orm.RunSyncdb("default", false, true)
 	orm.Debug = true
+}
+
+func InitLoger() {
+	log := logs.NewLogger(10000)  // 创建一个日志记录器，参数为缓冲区的大小
+	log.SetLogger("console", "")  // 设置日志记录方式：控制台记录
+	log.SetLevel(logs.LevelDebug) // 设置日志写入缓冲区的等级：Debug级别（最低级别，所以所有log都会输入到缓冲区）
+	log.EnableFuncCallDepth(true) // 输出log时能显示输出文件名和行号（非必须）
 }

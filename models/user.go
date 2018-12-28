@@ -8,14 +8,13 @@ import (
 )
 
 type User struct {
-	Id int
-	UserNo string `orm:"size(64)"`
-	UserName string `orm:"size(64)"`
+	UserNo    string `orm:"pk"`
+	UserName  string `orm:"size(64)"`
 	UserToken string `orm:"size(64)"`
 	UserPhone string `orm:"size(16)"`
-	NameHead string `orm:"size(128)"`
-	NameCity string `orm:"size(32)"`
-	CreatTime int
+	NameHead  string `orm:"size(128)"`
+	NameCity  string `orm:"size(32)"`
+	CreatTime int64
 }
 
 func init() {
@@ -30,13 +29,13 @@ func AddUser(phone string) (result bool, u *User) {
 	user.UserPhone = phone
 	user.NameHead = ""
 	user.NameCity = ""
-	user.CreatTime = int(time.Now().Unix())
+	user.CreatTime = int64(time.Now().UnixNano() / 1e6)
 
 	o := orm.NewOrm()
 	_, err := o.Insert(user)
 	if err == nil {
 		return true, user
-	}else{
+	} else {
 		return false, user
 	}
 }
@@ -53,7 +52,7 @@ func GetUser(phoneNumber string) (u *User) {
 	return user
 }
 
-func GetUserById(Id string) (u *User) {
+func GetUserById(Id string) *User {
 	o := orm.NewOrm()
 	user := new(User)
 	err := o.QueryTable("user").Filter("user_no", Id).One(user)
@@ -83,7 +82,7 @@ func UpdateUserInfo(uid string, ctype int, content string) bool {
 			return true
 		}
 		return false
-	}else{
+	} else {
 		return false
 	}
 }
@@ -92,9 +91,9 @@ func Login(phoneNumber string) (u *User) {
 	user := GetUser(phoneNumber)
 	if user != nil {
 		return UpdateToken(user)
-	}else{
+	} else {
 		result, newUser := AddUser(phoneNumber)
-		if result{
+		if result {
 			return newUser
 		}
 		return nil

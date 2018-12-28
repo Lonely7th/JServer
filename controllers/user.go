@@ -48,10 +48,10 @@ func (u *UserController) ChangeInfo() {
 	ctype, _ := u.GetInt("ctype")
 	userNo := u.GetString("user_no")
 	content := u.GetString("content")
-	if models.UpdateUserInfo(userNo,ctype,content) {
+	if models.UpdateUserInfo(userNo, ctype, content) {
 		u.Data["json"] = models.GetJsonResult("")
-	}else{
-		u.Data["json"] = models.GetErrorResult("403","失败")
+	} else {
+		u.Data["json"] = models.GetErrorResult("403", "失败")
 	}
 	u.ServeJSON()
 }
@@ -59,25 +59,25 @@ func (u *UserController) ChangeInfo() {
 // @Title ChangeHead
 // @Description 修改用户头像
 // @Param	user_no		query 	string	true		"用户Id"
-// @Param	src		query 	string	true		"图片内容base64"
+// @Param	res		query 	string	true		"图片内容base64"
 // @Success 200 {string} success
 // @router /changeHead [post]
 func (u *UserController) ChangeHead() {
-	src, _, err := u.GetFile("src")
+	src, _, err := u.GetFile("res")
 	userNo := u.GetString("user_no")
 	filePath := userNo + util.GetCurrentTime() + ".jpg"
-	picPath := PicDir + filePath// 图片保存的路径
+	picPath := PicDir + filePath // 图片保存的路径
 
 	if err != nil {
-		u.Data["json"] = models.GetErrorResult("404","加载文件失败")
-	}else{
+		u.Data["json"] = models.GetErrorResult("404", "加载文件失败")
+	} else {
 		defer src.Close()
-		_ = u.SaveToFile("src", picPath)
+		_ = u.SaveToFile("res", picPath)
 
-		if models.UpdateUserInfo(userNo,2, ImagePath + filePath) {
-			u.Data["json"] = models.GetJsonResult(picPath)
-		}else{
-			u.Data["json"] = models.GetErrorResult("403","保存数据失败")
+		if models.UpdateUserInfo(userNo, 2, filePath) {
+			u.Data["json"] = models.GetJsonResult(ImagePath + filePath)
+		} else {
+			u.Data["json"] = models.GetErrorResult("403", "保存数据失败")
 		}
 
 	}
@@ -95,9 +95,8 @@ func (u *UserController) GetUserInfo() {
 	user.NameHead = ImagePath + user.NameHead
 	if user != nil {
 		u.Data["json"] = models.GetJsonResult(user)
-	}else{
-		u.Data["json"] = models.GetErrorResult("403","失败")
+	} else {
+		u.Data["json"] = models.GetErrorResult("403", "失败")
 	}
 	u.ServeJSON()
 }
-

@@ -1,124 +1,50 @@
-2018/12/26 10:44:16.483 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 10:53:24.244 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 10:53:50.328 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 10:54:27.689 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 10:55:03.050 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 10:58:38.963 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 10:59:03.003 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 11:00:58.586 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 11:25:45.891 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 11:25:49.506 [C] [asm_amd64.s:522]  the request url is  /api/v1/login
-2018/12/26 11:25:49.506 [C] [asm_amd64.s:522]  Handler crashed with error <Ormer> table: `.` not found, make sure it was registered with `RegisterModel()`
-2018/12/26 11:25:49.506 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
-2018/12/26 11:25:49.506 [C] [asm_amd64.s:522]  D:/Go/src/runtime/panic.go:513
-2018/12/26 11:25:49.506 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:113
-2018/12/26 11:25:49.506 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:235
-2018/12/26 11:25:49.506 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:62
-2018/12/26 11:25:49.506 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:53
-2018/12/26 11:25:49.506 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/controllers/user.go:101
-2018/12/26 11:25:49.507 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
-2018/12/26 11:25:49.507 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:447
-2018/12/26 11:25:49.507 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:308
-2018/12/26 11:25:49.507 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/router.go:852
-2018/12/26 11:25:49.507 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:2741
-2018/12/26 11:25:49.507 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:1847
-2018/12/26 11:25:49.507 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:1333
-2018/12/26 11:25:49.510 [server.go:2977]  [HTTP] http: multiple response.WriteHeader calls
-2018/12/26 11:27:01.705 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 13:01:13.492 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 13:01:30.943 [C] [asm_amd64.s:522]  the request url is  /api/v1/login
-2018/12/26 13:01:30.943 [C] [asm_amd64.s:522]  Handler crashed with error <Ormer> table: `.` not found, make sure it was registered with `RegisterModel()`
-2018/12/26 13:01:30.943 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
-2018/12/26 13:01:30.943 [C] [asm_amd64.s:522]  D:/Go/src/runtime/panic.go:513
-2018/12/26 13:01:30.943 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:113
-2018/12/26 13:01:30.943 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:162
-2018/12/26 13:01:30.943 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:36
-2018/12/26 13:01:30.943 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:66
-2018/12/26 13:01:30.943 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/controllers/user.go:101
-2018/12/26 13:01:30.943 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
-2018/12/26 13:01:30.943 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:447
-2018/12/26 13:01:30.943 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:308
-2018/12/26 13:01:30.943 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/router.go:852
-2018/12/26 13:01:30.943 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:2741
-2018/12/26 13:01:30.944 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:1847
-2018/12/26 13:01:30.944 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:1333
-2018/12/26 13:01:30.944 [server.go:2977]  [HTTP] http: multiple response.WriteHeader calls
-2018/12/26 13:02:10.139 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 13:02:13.773 [C] [asm_amd64.s:522]  the request url is  /api/v1/login
-2018/12/26 13:02:13.773 [C] [asm_amd64.s:522]  Handler crashed with error <Ormer> table: `.` not found, make sure it was registered with `RegisterModel()`
-2018/12/26 13:02:13.773 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
-2018/12/26 13:02:13.774 [C] [asm_amd64.s:522]  D:/Go/src/runtime/panic.go:513
-2018/12/26 13:02:13.774 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:113
-2018/12/26 13:02:13.774 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm.go:162
-2018/12/26 13:02:13.774 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:37
-2018/12/26 13:02:13.774 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/user.go:67
-2018/12/26 13:02:13.774 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/controllers/user.go:101
-2018/12/26 13:02:13.774 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
-2018/12/26 13:02:13.774 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:447
-2018/12/26 13:02:13.774 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:308
-2018/12/26 13:02:13.774 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/router.go:852
-2018/12/26 13:02:13.774 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:2741
-2018/12/26 13:02:13.774 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:1847
-2018/12/26 13:02:13.774 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:1333
-2018/12/26 13:02:13.775 [server.go:2977]  [HTTP] http: multiple response.WriteHeader calls
-2018/12/26 13:03:04.141 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 13:05:45.440 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 13:08:26.797 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 13:09:41.209 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 13:10:20.560 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 15:12:57.723 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 15:28:43.705 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 15:30:42.401 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 15:31:07.988 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 15:33:52.835 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 15:34:31.199 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 15:36:44.123 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 15:37:06.994 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 15:51:28.160 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 16:02:57.785 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 16:05:42.013 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 16:10:13.025 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 16:27:12.619 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 16:30:21.270 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 16:30:40.286 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 16:37:16.461 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 16:37:33.639 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 16:49:02.146 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 16:49:30.041 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 17:04:12.867 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 17:05:27.943 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 17:06:31.940 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/26 17:06:31.943 [C] [asm_amd64.s:1333]  ListenAndServe:  listen tcp :8080: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted.
-2018/12/26 17:14:53.055 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 09:56:11.139 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 09:56:11.140 [C] [asm_amd64.s:1333]  ListenAndServe:  listen tcp :8080: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted.
-2018/12/27 10:52:18.252 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 10:52:18.270 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 10:52:18.271 [C] [asm_amd64.s:1333]  ListenAndServe:  listen tcp :8080: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted.
-2018/12/27 10:56:23.727 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 10:59:07.151 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 12:56:57.042 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 12:57:41.827 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 12:58:20.564 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 12:58:41.923 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 12:58:54.159 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 13:00:45.982 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 13:02:06.095 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 13:02:10.714 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 13:03:22.642 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 13:06:05.154 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 13:32:31.406 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 13:38:01.909 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 13:55:45.269 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 13:56:52.650 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 13:59:08.302 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 14:00:03.890 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 17:09:52.919 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 17:28:49.038 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 17:36:21.204 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 19:21:03.152 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 19:31:24.334 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 19:32:49.946 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 19:40:59.297 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 19:41:57.236 [I] [asm_amd64.s:1333]  http server Running on http://:8080
-2018/12/27 19:42:32.659 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 09:49:59.079 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 11:05:52.554 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 11:09:38.813 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 11:09:42.463 [C] [asm_amd64.s:522]  the request url is  /api/v3/addJNote
+2018/12/28 11:09:42.463 [C] [asm_amd64.s:522]  Handler crashed with error runtime error: invalid memory address or nil pointer dereference
+2018/12/28 11:09:42.463 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/28 11:09:42.463 [C] [asm_amd64.s:522]  D:/Go/src/runtime/panic.go:513
+2018/12/28 11:09:42.463 [C] [asm_amd64.s:522]  D:/Go/src/runtime/panic.go:82
+2018/12/28 11:09:42.463 [C] [asm_amd64.s:522]  D:/Go/src/runtime/signal_windows.go:204
+2018/12/28 11:09:42.463 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/controllers/note.go:50
+2018/12/28 11:09:42.463 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/28 11:09:42.463 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:447
+2018/12/28 11:09:42.463 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:308
+2018/12/28 11:09:42.464 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/router.go:852
+2018/12/28 11:09:42.464 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:2741
+2018/12/28 11:09:42.464 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:1847
+2018/12/28 11:09:42.464 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:1333
+2018/12/28 11:09:42.464 [server.go:2977]  [HTTP] http: multiple response.WriteHeader calls
+2018/12/28 11:20:45.198 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 11:29:02.201 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 11:30:36.002 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 13:09:36.739 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 13:09:57.522 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 13:10:52.150 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 13:11:02.338 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 13:11:05.550 [C] [asm_amd64.s:522]  the request url is  /api/v3/getJNoteList
+2018/12/28 13:11:05.550 [C] [asm_amd64.s:522]  Handler crashed with error wrong object type `string` for rows scan, need *ApiJServer/models.JNote
+2018/12/28 13:11:05.550 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/28 13:11:05.550 [C] [asm_amd64.s:522]  D:/Go/src/runtime/panic.go:513
+2018/12/28 13:11:05.550 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/db.go:916
+2018/12/28 13:11:05.550 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/orm/orm_queryset.go:213
+2018/12/28 13:11:05.550 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/models/note.go:109
+2018/12/28 13:11:05.550 [C] [asm_amd64.s:522]  D:/go_project/src/ApiJServer/controllers/note.go:68
+2018/12/28 13:11:05.550 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:522
+2018/12/28 13:11:05.550 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:447
+2018/12/28 13:11:05.551 [C] [asm_amd64.s:522]  D:/Go/src/reflect/value.go:308
+2018/12/28 13:11:05.551 [C] [asm_amd64.s:522]  D:/golang/workspace/src/github.com/astaxie/beego/router.go:852
+2018/12/28 13:11:05.551 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:2741
+2018/12/28 13:11:05.551 [C] [asm_amd64.s:522]  D:/Go/src/net/http/server.go:1847
+2018/12/28 13:11:05.551 [C] [asm_amd64.s:522]  D:/Go/src/runtime/asm_amd64.s:1333
+2018/12/28 13:11:05.552 [server.go:2977]  [HTTP] http: multiple response.WriteHeader calls
+2018/12/28 13:11:42.395 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 13:36:57.798 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 13:41:51.024 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 13:46:11.554 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 13:47:39.657 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 13:52:46.861 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 13:55:28.277 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 14:04:11.525 [I] [asm_amd64.s:1333]  http server Running on http://:8080
+2018/12/28 14:06:03.874 [I] [asm_amd64.s:1333]  http server Running on http://:8080
