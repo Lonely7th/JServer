@@ -41,6 +41,9 @@ func AddUser(phone string) (result bool, u *User) {
 }
 
 func GetUser(phoneNumber string) (u *User) {
+	if util.Validate(phoneNumber) {
+		return nil
+	}
 	o := orm.NewOrm()
 	user := new(User)
 	err := o.QueryTable("user").Filter("user_phone", phoneNumber).One(user)
