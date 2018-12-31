@@ -135,3 +135,15 @@ func PostJNoteResult() bool {
 func StarJNote(userNo string, NoteId string) bool {
 	return true
 }
+
+//获取标签列表
+func GetLabelList() *[]JLable {
+	o := orm.NewOrm()
+	labelList := new([]JLable)
+	_, err := o.QueryTable("j_note").RelatedSel().All(labelList)
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+	return labelList
+}

@@ -131,3 +131,19 @@ func (u *NoteController) StarJNote() {
 	}
 	u.ServeJSON()
 }
+
+// @Title GetLabelList
+// @Description 获取标签列表
+// @Success 200 {string} success
+// @router /getLabelList [get]
+func (u *NoteController) GetLabelList() {
+	userNo := u.GetString("user_no")
+	user := models.GetUserById(userNo)
+	user.NameHead = ImagePath + user.NameHead
+	if user != nil {
+		u.Data["json"] = models.GetJsonResult(user)
+	} else {
+		u.Data["json"] = models.GetErrorResult("403", "失败")
+	}
+	u.ServeJSON()
+}
