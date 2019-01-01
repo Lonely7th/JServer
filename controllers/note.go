@@ -101,14 +101,19 @@ func (u *NoteController) GetJNoteDetails() {
 // @Title PostJNoteResult
 // @Description 提交结果
 // @Param	user_no		query 	string	true		"用户Id"
+// @Param	note_id		query 	string	true		"NoteId"
+// @Param	status		query 	int	true		"完成状态"
+// @Param	score		query 	int	true		"完成成绩"
 // @Success 200 {string} success
 // @router /postJNoteResult [post]
 func (u *NoteController) PostJNoteResult() {
 	userNo := u.GetString("user_no")
-	user := models.GetUserById(userNo)
-	user.NameHead = ImagePath + user.NameHead
-	if user != nil {
-		u.Data["json"] = models.GetJsonResult(user)
+	noteId := u.GetString("note_id")
+	status, _ := u.GetInt("status")
+	score, _ := u.GetInt("score")
+	result, noteScore := models.PostJNoteResult(userNo, noteId, status, score)
+	if result {
+		u.Data["json"] = models.GetJsonResult(noteScore)
 	} else {
 		u.Data["json"] = models.GetErrorResult("403", "失败")
 	}
@@ -116,18 +121,31 @@ func (u *NoteController) PostJNoteResult() {
 }
 
 // @Title StarJNote
-// @Description 获取JNote列表
+// @Description 收藏JNote
+// @Param	type		query 	int	true		"操作类型 0.添加收藏 1.删除收藏"
 // @Param	user_no		query 	string	true		"用户Id"
+// @Param	note_id		query 	string	true		"NoteId"
+// @Param	star_id		query 	string	true		"收藏Id"
 // @Success 200 {string} success
 // @router /starJNote [post]
 func (u *NoteController) StarJNote() {
-	userNo := u.GetString("user_no")
-	user := models.GetUserById(userNo)
-	user.NameHead = ImagePath + user.NameHead
-	if user != nil {
-		u.Data["json"] = models.GetJsonResult(user)
-	} else {
-		u.Data["json"] = models.GetErrorResult("403", "失败")
+	starType, _ := u.GetInt("type")
+	if starType == 0 { //添加收藏
+		userNo := u.GetString("user_no")
+		noteId := u.GetString("note_id")
+		result, starJNote := models.AddStarJNote(userNo, noteId)
+		if result {
+			u.Data["json"] = models.GetJsonResult(starJNote)
+		} else {
+			u.Data["json"] = models.GetErrorResult("403", "失败")
+		}
+	} else if starType == 1 { //删除收藏
+		starId := u.GetString("star_id")
+		if models.DeleteStarJNote(starId) {
+			u.Data["json"] = models.GetJsonResult("")
+		} else {
+			u.Data["json"] = models.GetErrorResult("403", "失败")
+		}
 	}
 	u.ServeJSON()
 }
@@ -137,11 +155,9 @@ func (u *NoteController) StarJNote() {
 // @Success 200 {string} success
 // @router /getLabelList [get]
 func (u *NoteController) GetLabelList() {
-	userNo := u.GetString("user_no")
-	user := models.GetUserById(userNo)
-	user.NameHead = ImagePath + user.NameHead
-	if user != nil {
-		u.Data["json"] = models.GetJsonResult(user)
+	list := models.GetLabelList()
+	if list != nil {
+		u.Data["json"] = models.GetJsonResult(list)
 	} else {
 		u.Data["json"] = models.GetErrorResult("403", "失败")
 	}

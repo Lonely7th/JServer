@@ -10,7 +10,7 @@ import (
 type JNote struct {
 	NoteId      string `orm:"pk"`       // 唯一标识
 	Content     string `orm:"size(64)"` // 内容简介
-	Releaser    *User  `orm:"rel(fk)"`  // OneToOne relation 发布者
+	Releaser    *User  `orm:"rel(fk)"`  // relation 发布者
 	CreatTime   int64  // 发布时间
 	ResPath     string `orm:"size(64)"` // 图片地址
 	DisplayNum  int    // 展示次数
@@ -42,8 +42,22 @@ type RCateNote struct {
 	Nid string `orm:"size(64)"`
 }
 
+type JNoteStar struct {
+	StarNo string `orm:"pk"`       // 唯一标识
+	UserNo string `orm:"size(64)"` // 用户Id
+	NoteId *JNote `orm:"rel(fk)"`  // NoteId
+}
+
+type JNoteScore struct {
+	Id     int
+	UserNo string `orm:"size(64)"` // 用户Id
+	NoteId string `orm:"size(64)"` // NoteId
+	Status int    // 完成状态
+	Score  int    // 成绩
+}
+
 func init() {
-	orm.RegisterModel(new(JNote), new(JLable), new(RCateNote))
+	orm.RegisterModel(new(JNote), new(JLable), new(RCateNote), new(JNoteStar), new(JNoteScore))
 }
 
 //添加JNote
@@ -127,20 +141,57 @@ func GetJNoteDetails(noteId string) *JNote {
 }
 
 //提交结果
-func PostJNoteResult() bool {
-	return true
+func PostJNoteResult(userNo string, noteId string, status int, score int) (bool, *JNoteScore) {
+	noteScore := new(JNoteScore)
+	noteScore.NoteId = noteId
+	noteScore.Score = score
+	noteScore.Status = status
+	noteScore.UserNo = userNo
+
+	o := orm.NewOrm()
+	_, err := o.Insert(noteScore)
+	if err == nil {
+		return true, noteScore
+	} else {
+		return false, noteScore
+	}
 }
 
-//收藏JNote
-func StarJNote(userNo string, NoteId string) bool {
-	return true
+//添加收藏
+func AddStarJNote(userNo string, noteId string) (bool, *JNoteStar) {
+	noteStar := new(JNoteStar)
+	noteStar.UserNo = userNo
+	noteStar.NoteId = GetJNoteDetails(noteId)
+	noteStar.StarNo = userNo + util.GetRandomString(8)
+
+	o := orm.NewOrm()
+	_, err := o.Insert(noteStar)
+	if err == nil {
+		return true, noteStar
+	} else {
+		return false, noteStar
+	}
+}
+
+//取消收藏
+func DeleteStarJNote(starId string) bool {
+	noteStar := new(JNoteStar)
+	noteStar.StarNo = starId
+
+	o := orm.NewOrm()
+	_, err := o.Delete(noteStar)
+	if err == nil {
+		return true, noteStar
+	} else {
+		return false, noteStar
+	}
 }
 
 //获取标签列表
 func GetLabelList() *[]JLable {
 	o := orm.NewOrm()
 	labelList := new([]JLable)
-	_, err := o.QueryTable("j_note").RelatedSel().All(labelList)
+	_, err := o.QueryTable("j_label").RelatedSel().All(labelList)
 	if err != nil {
 		fmt.Println(err)
 		return nil
