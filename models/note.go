@@ -120,7 +120,7 @@ func GetJNoteList(categroy string) *[]JNote {
 	o := orm.NewOrm()
 	noteList := new([]JNote)
 	if categroy == "0" {
-		_, err := o.QueryTable("j_note").RelatedSel().All(noteList)
+		_, err := o.QueryTable("j_note").OrderBy("-creat_time").RelatedSel().All(noteList)
 		if err != nil {
 			fmt.Println(err)
 			return nil
@@ -181,9 +181,9 @@ func DeleteStarJNote(starId string) bool {
 	o := orm.NewOrm()
 	_, err := o.Delete(noteStar)
 	if err == nil {
-		return true, noteStar
+		return true
 	} else {
-		return false, noteStar
+		return false
 	}
 }
 
@@ -191,7 +191,7 @@ func DeleteStarJNote(starId string) bool {
 func GetLabelList() *[]JLable {
 	o := orm.NewOrm()
 	labelList := new([]JLable)
-	_, err := o.QueryTable("j_label").RelatedSel().All(labelList)
+	_, err := o.QueryTable("j_lable").RelatedSel().All(labelList)
 	if err != nil {
 		fmt.Println(err)
 		return nil
