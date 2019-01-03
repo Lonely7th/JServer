@@ -64,8 +64,9 @@ func (u *NoteController) AddJNote() {
 // @Success 200 {string} success
 // @router /getJNoteList [get]
 func (u *NoteController) GetJNoteList() {
-	categroy := u.GetString("categroy")
-	list := models.GetJNoteList(categroy)
+	category := u.GetString("categroy")
+	page, _ := u.GetInt("page")
+	list := models.GetJNoteList(category, page)
 	for _, item := range *list {
 		item.ResPath = ImagePath + item.ResPath
 		item.Releaser.UserToken = ""
@@ -150,12 +151,43 @@ func (u *NoteController) StarJNote() {
 	u.ServeJSON()
 }
 
+// @Title GetStarNoteList
+// @Description 获取用户收藏列表
+// @Param	user_no		query 	string	true		"用户Id"
+// @Success 200 {string} success
+// @router /getStarNoteList [get]
+func (u *NoteController) GetStarNoteList() {
+	user_id := u.GetString("user_no")
+	list := models.GetStarNoteList(user_id)
+	if list != nil {
+		u.Data["json"] = models.GetJsonResult(list)
+	} else {
+		u.Data["json"] = models.GetErrorResult("403", "失败")
+	}
+	u.ServeJSON()
+}
+
 // @Title GetLabelList
 // @Description 获取标签列表
 // @Success 200 {string} success
 // @router /getLabelList [get]
 func (u *NoteController) GetLabelList() {
 	list := models.GetLabelList()
+	if list != nil {
+		u.Data["json"] = models.GetJsonResult(list)
+	} else {
+		u.Data["json"] = models.GetErrorResult("403", "失败")
+	}
+	u.ServeJSON()
+}
+
+// @Title GetReleaseList
+// @Description 获取用户发布列表
+// @Success 200 {string} success
+// @router /getReleaseList [get]
+func (u *NoteController) GetReleaseList() {
+	user_id := u.GetString("user_no")
+	list := models.GetUserReleaseNoteList(user_id)
 	if list != nil {
 		u.Data["json"] = models.GetJsonResult(list)
 	} else {

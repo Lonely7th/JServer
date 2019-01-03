@@ -36,16 +36,18 @@ type JLable struct {
 	Title string `orm:"size(64)"`
 }
 
-type RCateNote struct {
-	Id  int
-	Cid string `orm:"size(64)"`
-	Nid string `orm:"size(64)"`
+type RCategoryNote struct {
+	Id        int
+	Cid       string `orm:"size(64)"`
+	Note      *JNote `orm:"rel(fk)"` //关联的JNote
+	CreatTime int64  // 发布时间
 }
 
 type JNoteStar struct {
-	StarNo string `orm:"pk"`       // 唯一标识
-	UserNo string `orm:"size(64)"` // 用户Id
-	NoteId *JNote `orm:"rel(fk)"`  // NoteId
+	StarNo    string `orm:"pk"`       // 唯一标识
+	UserNo    string `orm:"size(64)"` // 用户Id
+	Note      *JNote `orm:"rel(fk)"`  // NoteId
+	CreatTime int64  // 收藏时间
 }
 
 type JNoteScore struct {
@@ -57,7 +59,7 @@ type JNoteScore struct {
 }
 
 func init() {
-	orm.RegisterModel(new(JNote), new(JLable), new(RCateNote), new(JNoteStar), new(JNoteScore))
+	orm.RegisterModel(new(JNote), new(JLable), new(RCategoryNote), new(JNoteStar), new(JNoteScore))
 }
 
 //添加JNote
@@ -67,7 +69,8 @@ func AddJNote(content string, releaser string, resPath string, jtype int, limitN
 	note.BestResults = -1
 	note.CompleteNum = 0
 	note.Content = content
-	note.CreatTime = int64(time.Now().UnixNano() / 1e6)
+	CurrentTime := int64(time.Now().UnixNano() / 1e6)
+	note.CreatTime = CurrentTime
 	note.CropFormat = cropFormat
 	note.DisplayNum = 0
 	note.HideUser = hideUser
@@ -89,22 +92,26 @@ func AddJNote(content string, releaser string, resPath string, jtype int, limitN
 	_, err := o.Insert(note)
 	if err == nil {
 		//添加分类关联
-		relation1 := new(RCateNote)
-		relation1.Cid = "0" // 新的
-		relation1.Nid = NoteId
-		_, _ = o.Insert(relation1)
+		if jtype != 0 && limitNum < 120 { // 低于120次的默认为困难
+			relation1 := new(RCategoryNote)
+			relation1.Cid = "2" // 困难
+			relation1.CreatTime = CurrentTime
+			relation1.Note = note
+			_, _ = o.Insert(relation1)
+		}
 
-		relation2 := new(RCateNote)
-		relation2.Nid = NoteId
+		relation2 := new(RCategoryNote)
+		relation2.Note = note
+		relation2.CreatTime = CurrentTime
 		switch jtype {
 		case 0:
-			relation2.Cid = "4" // 无限制
+			relation2.Cid = "3" // 无限制
 			break
 		case 1:
-			relation2.Cid = "5" // 时间限制
+			relation2.Cid = "4" // 时间限制
 			break
 		case 2:
-			relation2.Cid = "6" // 次数限制
+			relation2.Cid = "5" // 次数限制
 			break
 		}
 		_, _ = o.Insert(relation2)
@@ -115,16 +122,80 @@ func AddJNote(content string, releaser string, resPath string, jtype int, limitN
 	}
 }
 
+const PageSize int = 10
+const DisplayHot int = 1000
+
 //获取JNote列表
-func GetJNoteList(categroy string) *[]JNote {
+func GetJNoteList(categroy string, page int) *[]JNote {
 	o := orm.NewOrm()
 	noteList := new([]JNote)
-	if categroy == "0" {
-		_, err := o.QueryTable("j_note").OrderBy("-creat_time").RelatedSel().All(noteList)
+	categroyList := new([]RCategoryNote)
+	switch categroy {
+	case "0":
+		_, err := o.QueryTable("j_note").OrderBy("-creat_time").RelatedSel().Limit(PageSize, (page-1)*PageSize).All(noteList)
 		if err != nil {
 			fmt.Println(err)
 			return nil
 		}
+		break
+	case "1":
+		_, err := o.QueryTable("j_note").Filter("display_num__gte", DisplayHot).OrderBy("-creat_time").RelatedSel().Limit(PageSize, (page-1)*PageSize).All(noteList)
+		if err != nil {
+			fmt.Println(err)
+			return nil
+		}
+		break
+	case "2":
+		_, err := o.QueryTable("r_category_note").Filter("cid", categroy).OrderBy("-creat_time").RelatedSel().Limit(PageSize, (page-1)*PageSize).All(categroyList)
+		if err != nil {
+			fmt.Println(err)
+			return nil
+		} else {
+			for _, item := range *categroyList {
+				*noteList = append(*noteList, *item.Note)
+			}
+		}
+		break
+	case "3":
+		_, err := o.QueryTable("r_category_note").Filter("cid", categroy).OrderBy("-creat_time").RelatedSel().Limit(PageSize, (page-1)*PageSize).All(categroyList)
+		if err != nil {
+			fmt.Println(err)
+			return nil
+		} else {
+			for _, item := range *categroyList {
+				*noteList = append(*noteList, *item.Note)
+			}
+		}
+		break
+	case "4":
+		_, err := o.QueryTable("r_category_note").Filter("cid", categroy).OrderBy("-creat_time").RelatedSel().Limit(PageSize, (page-1)*PageSize).All(categroyList)
+		if err != nil {
+			fmt.Println(err)
+			return nil
+		} else {
+			for _, item := range *categroyList {
+				*noteList = append(*noteList, *item.Note)
+			}
+		}
+		break
+	case "5":
+		_, err := o.QueryTable("r_category_note").Filter("cid", categroy).OrderBy("-creat_time").RelatedSel().Limit(PageSize, (page-1)*PageSize).All(categroyList)
+		if err != nil {
+			fmt.Println(err)
+			return nil
+		} else {
+			for _, item := range *categroyList {
+				*noteList = append(*noteList, *item.Note)
+			}
+		}
+		break
+	case "6": // 加载全部
+		_, err := o.QueryTable("j_note").OrderBy("-creat_time").RelatedSel().Limit(PageSize, (page-1)*PageSize).All(noteList)
+		if err != nil {
+			fmt.Println(err)
+			return nil
+		}
+		break
 	}
 	return noteList
 }
@@ -161,7 +232,8 @@ func PostJNoteResult(userNo string, noteId string, status int, score int) (bool,
 func AddStarJNote(userNo string, noteId string) (bool, *JNoteStar) {
 	noteStar := new(JNoteStar)
 	noteStar.UserNo = userNo
-	noteStar.NoteId = GetJNoteDetails(noteId)
+	noteStar.CreatTime = int64(time.Now().UnixNano() / 1e6)
+	noteStar.Note = GetJNoteDetails(noteId)
 	noteStar.StarNo = userNo + util.GetRandomString(8)
 
 	o := orm.NewOrm()
@@ -187,6 +259,18 @@ func DeleteStarJNote(starId string) bool {
 	}
 }
 
+//获取收藏列表
+func GetStarNoteList(userId string) *[]JNoteStar {
+	o := orm.NewOrm()
+	noteList := new([]JNoteStar)
+	_, err := o.QueryTable("j_note_star").Filter("user_no", userId).OrderBy("-creat_time").RelatedSel().All(noteList)
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+	return noteList
+}
+
 //获取标签列表
 func GetLabelList() *[]JLable {
 	o := orm.NewOrm()
@@ -197,4 +281,16 @@ func GetLabelList() *[]JLable {
 		return nil
 	}
 	return labelList
+}
+
+//获取用户发布列表
+func GetUserReleaseNoteList(userId string) *[]JNote {
+	o := orm.NewOrm()
+	noteList := new([]JNote)
+	_, err := o.QueryTable("j_note").Filter("releaser_id", userId).OrderBy("-creat_time").RelatedSel().All(noteList)
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+	return noteList
 }
