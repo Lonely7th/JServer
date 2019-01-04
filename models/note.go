@@ -28,6 +28,8 @@ type JNote struct {
 
 	HideUser   bool   // 匿名发布
 	CropFormat string `orm:"size(16)"`
+
+	FavoriteId int
 }
 
 type JLable struct {
@@ -44,7 +46,7 @@ type RCategoryNote struct {
 }
 
 type JNoteStar struct {
-	StarNo    string `orm:"pk"`       // 唯一标识
+	Id        int
 	UserNo    string `orm:"size(64)"` // 用户Id
 	Note      *JNote `orm:"rel(fk)"`  // NoteId
 	CreatTime int64  // 收藏时间
@@ -54,7 +56,7 @@ type JNoteScore struct {
 	Id     int
 	UserNo string `orm:"size(64)"` // 用户Id
 	NoteId string `orm:"size(64)"` // NoteId
-	Status int    // 完成状态
+	Status int    // 完成状态 0.失败 1.成功 2.刷新最好成绩
 	Score  int    // 成绩
 }
 
@@ -135,21 +137,18 @@ func GetJNoteList(categroy string, page int) *[]JNote {
 		_, err := o.QueryTable("j_note").OrderBy("-creat_time").RelatedSel().Limit(PageSize, (page-1)*PageSize).All(noteList)
 		if err != nil {
 			fmt.Println(err)
-			return nil
 		}
 		break
 	case "1":
 		_, err := o.QueryTable("j_note").Filter("display_num__gte", DisplayHot).OrderBy("-creat_time").RelatedSel().Limit(PageSize, (page-1)*PageSize).All(noteList)
 		if err != nil {
 			fmt.Println(err)
-			return nil
 		}
 		break
 	case "2":
 		_, err := o.QueryTable("r_category_note").Filter("cid", categroy).OrderBy("-creat_time").RelatedSel().Limit(PageSize, (page-1)*PageSize).All(categroyList)
 		if err != nil {
 			fmt.Println(err)
-			return nil
 		} else {
 			for _, item := range *categroyList {
 				*noteList = append(*noteList, *item.Note)
@@ -160,7 +159,6 @@ func GetJNoteList(categroy string, page int) *[]JNote {
 		_, err := o.QueryTable("r_category_note").Filter("cid", categroy).OrderBy("-creat_time").RelatedSel().Limit(PageSize, (page-1)*PageSize).All(categroyList)
 		if err != nil {
 			fmt.Println(err)
-			return nil
 		} else {
 			for _, item := range *categroyList {
 				*noteList = append(*noteList, *item.Note)
@@ -171,7 +169,6 @@ func GetJNoteList(categroy string, page int) *[]JNote {
 		_, err := o.QueryTable("r_category_note").Filter("cid", categroy).OrderBy("-creat_time").RelatedSel().Limit(PageSize, (page-1)*PageSize).All(categroyList)
 		if err != nil {
 			fmt.Println(err)
-			return nil
 		} else {
 			for _, item := range *categroyList {
 				*noteList = append(*noteList, *item.Note)
@@ -182,7 +179,6 @@ func GetJNoteList(categroy string, page int) *[]JNote {
 		_, err := o.QueryTable("r_category_note").Filter("cid", categroy).OrderBy("-creat_time").RelatedSel().Limit(PageSize, (page-1)*PageSize).All(categroyList)
 		if err != nil {
 			fmt.Println(err)
-			return nil
 		} else {
 			for _, item := range *categroyList {
 				*noteList = append(*noteList, *item.Note)
@@ -193,7 +189,6 @@ func GetJNoteList(categroy string, page int) *[]JNote {
 		_, err := o.QueryTable("j_note").OrderBy("-creat_time").RelatedSel().Limit(PageSize, (page-1)*PageSize).All(noteList)
 		if err != nil {
 			fmt.Println(err)
-			return nil
 		}
 		break
 	}
@@ -201,12 +196,20 @@ func GetJNoteList(categroy string, page int) *[]JNote {
 }
 
 //获取JNote详情
-func GetJNoteDetails(noteId string) *JNote {
+func GetJNoteDetails(noteId string, userId string) *JNote {
 	o := orm.NewOrm()
 	note := new(JNote)
-	err := o.QueryTable("j_note").RelatedSel().Filter("note_id", noteId).One(note)
-	if err != nil {
+	err1 := o.QueryTable("j_note").RelatedSel().Filter("note_id", noteId).One(note)
+	if err1 != nil {
+		fmt.Println(err1)
 		return nil
+	}
+
+	//判断当前用户是否收藏此Note
+	noteStar := new(JNoteStar)
+	err2 := o.QueryTable("j_note_star").Filter("user_no", userId).Filter("note_id", noteId).One(noteStar)
+	if err2 == nil {
+		note.FavoriteId = 1
 	}
 	return note
 }
@@ -233,8 +236,7 @@ func AddStarJNote(userNo string, noteId string) (bool, *JNoteStar) {
 	noteStar := new(JNoteStar)
 	noteStar.UserNo = userNo
 	noteStar.CreatTime = int64(time.Now().UnixNano() / 1e6)
-	noteStar.Note = GetJNoteDetails(noteId)
-	noteStar.StarNo = userNo + util.GetRandomString(8)
+	noteStar.Note = GetJNoteDetails(noteId, userNo)
 
 	o := orm.NewOrm()
 	_, err := o.Insert(noteStar)
@@ -246,17 +248,18 @@ func AddStarJNote(userNo string, noteId string) (bool, *JNoteStar) {
 }
 
 //取消收藏
-func DeleteStarJNote(starId string) bool {
+func DeleteStarJNote(userNo string, noteId string) bool {
 	noteStar := new(JNoteStar)
-	noteStar.StarNo = starId
-
 	o := orm.NewOrm()
-	_, err := o.Delete(noteStar)
-	if err == nil {
-		return true
-	} else {
-		return false
+	err1 := o.QueryTable("j_note_star").Filter("user_no", userNo).Filter("note_id", noteId).One(noteStar)
+
+	if err1 == nil {
+		_, err2 := o.Delete(noteStar)
+		if err2 == nil {
+			return true
+		}
 	}
+	return false
 }
 
 //获取收藏列表

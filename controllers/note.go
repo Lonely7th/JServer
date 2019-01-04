@@ -87,11 +87,12 @@ func (u *NoteController) GetJNoteList() {
 // @router /getJNoteDetails [get]
 func (u *NoteController) GetJNoteDetails() {
 	noteId := u.GetString("note_id")
-	note := models.GetJNoteDetails(noteId)
-	note.ResPath = ImagePath + note.ResPath
-	note.Releaser.UserToken = ""
-	note.Releaser.NameHead = ImagePath + note.Releaser.NameHead
+	userId := u.GetString("user_id")
+	note := models.GetJNoteDetails(noteId, userId)
 	if note != nil {
+		note.ResPath = ImagePath + note.ResPath
+		note.Releaser.UserToken = ""
+		note.Releaser.NameHead = ImagePath + note.Releaser.NameHead
 		u.Data["json"] = models.GetJsonResult(note)
 	} else {
 		u.Data["json"] = models.GetErrorResult("403", "失败")
@@ -131,9 +132,9 @@ func (u *NoteController) PostJNoteResult() {
 // @router /starJNote [post]
 func (u *NoteController) StarJNote() {
 	starType, _ := u.GetInt("type")
+	userNo := u.GetString("user_no")
+	noteId := u.GetString("note_id")
 	if starType == 0 { //添加收藏
-		userNo := u.GetString("user_no")
-		noteId := u.GetString("note_id")
 		result, starJNote := models.AddStarJNote(userNo, noteId)
 		if result {
 			u.Data["json"] = models.GetJsonResult(starJNote)
@@ -141,8 +142,7 @@ func (u *NoteController) StarJNote() {
 			u.Data["json"] = models.GetErrorResult("403", "失败")
 		}
 	} else if starType == 1 { //删除收藏
-		starId := u.GetString("star_id")
-		if models.DeleteStarJNote(starId) {
+		if models.DeleteStarJNote(userNo, noteId) {
 			u.Data["json"] = models.GetJsonResult("")
 		} else {
 			u.Data["json"] = models.GetErrorResult("403", "失败")
