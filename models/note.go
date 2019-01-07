@@ -13,6 +13,7 @@ type JNote struct {
 	Releaser    *User  `orm:"rel(fk)"`  // relation 发布者
 	CreatTime   int64  // 发布时间
 	ResPath     string `orm:"size(64)"` // 图片地址
+	GsResPath   string `orm:"size(64)"` // 高斯模糊图片地址
 	DisplayNum  int    // 展示次数
 	CompleteNum int    // 完成次数
 	JType       int    // 限制类型(0.无限制 1.时间限制 2.次数限制)
@@ -65,10 +66,10 @@ func init() {
 }
 
 //添加JNote
-func AddJNote(content string, releaser string, resPath string, jtype int, limitNum int, hideUser bool, cropFormat string,
+func AddJNote(content string, releaser string, resPath string, gsResPath string, jtype int, limitNum int, hideUser bool, cropFormat string,
 	label1 int, label2 int, label3 int, labelTitle1 string, labelTitle2 string, labelTitle3 string) (bool, *JNote) {
 	note := new(JNote)
-	note.BestResults = -1
+	note.BestResults = limitNum
 	note.CompleteNum = 0
 	note.Content = content
 	CurrentTime := int64(time.Now().UnixNano() / 1e6)
@@ -83,6 +84,7 @@ func AddJNote(content string, releaser string, resPath string, jtype int, limitN
 	note.NoteId = NoteId
 	note.Releaser = GetUserById(releaser)
 	note.ResPath = resPath
+	note.GsResPath = gsResPath
 	note.Label1 = label1
 	note.Label2 = label2
 	note.Label3 = label3
@@ -224,6 +226,12 @@ func PostJNoteResult(userNo string, noteId string, status int, score int) (bool,
 
 	o := orm.NewOrm()
 	_, err := o.Insert(noteScore)
+	if status == 2 { // 刷新最佳成绩
+		note := GetJNoteDetails(noteId, userNo)
+		note.BestResults = score
+		o.Update(note)
+	}
+
 	if err == nil {
 		return true, noteScore
 	} else {

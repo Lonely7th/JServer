@@ -3,7 +3,9 @@ package controllers
 import (
 	"ApiJServer/models"
 	"ApiJServer/util"
+	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/esimov/stackblur-go"
 )
 
 type NoteController struct {
@@ -42,15 +44,26 @@ func (u *NoteController) AddJNote() {
 	label3, _ := u.GetInt("label3")
 	labelTitle3 := u.GetString("labelTitle3")
 
-	filePath := releaser + util.GetCurrentTime() + ".jpg"
-	result, note := models.AddJNote(content, releaser, filePath, jtype, limitNum, hideUser, cropFormat, label1, label2, label3, labelTitle1, labelTitle2, labelTitle3)
+	filePath := releaser + util.GetCurrentTime() + ".jpg"        // 原图路径
+	gaussianPath := releaser + util.GetCurrentTime() + "-gs.jpg" // 模糊图路径
+	result, note := models.AddJNote(content, releaser, filePath, gaussianPath, jtype, limitNum, hideUser, cropFormat, label1, label2, label3, labelTitle1, labelTitle2, labelTitle3)
 	if result == true {
 		//保存图片
 		picPath := PicDir + filePath // 图片保存的路径
 		defer resData.Close()
 		_ = u.SaveToFile("res", picPath)
 
+		//保存高斯模糊后的图片
+		src, err := util.LoadImage(picPath)
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			var done = make(chan struct{}, 25)
+			_ = util.SaveImage(PicDir+gaussianPath, stackblur.Process(src, 25, done))
+		}
+
 		note.ResPath = ImagePath + filePath
+		note.GsResPath = ImagePath + gaussianPath
 		u.Data["json"] = models.GetJsonResult(note)
 	} else {
 		u.Data["json"] = models.GetErrorResult("403", "保存失败")
@@ -104,7 +117,7 @@ func (u *NoteController) GetJNoteDetails() {
 // @Description 提交结果
 // @Param	user_no		query 	string	true		"用户Id"
 // @Param	note_id		query 	string	true		"NoteId"
-// @Param	status		query 	int	true		"完成状态"
+// @Param	status		query 	int	true		"完成状态" 0.未完成 1.完成 2.打破记录
 // @Param	score		query 	int	true		"完成成绩"
 // @Success 200 {string} success
 // @router /postJNoteResult [post]
@@ -188,6 +201,22 @@ func (u *NoteController) GetLabelList() {
 func (u *NoteController) GetReleaseList() {
 	user_id := u.GetString("user_no")
 	list := models.GetUserReleaseNoteList(user_id)
+	if list != nil {
+		u.Data["json"] = models.GetJsonResult(list)
+	} else {
+		u.Data["json"] = models.GetErrorResult("403", "失败")
+	}
+	u.ServeJSON()
+}
+
+// @Title SearchJNoteList
+// @Description 搜索JNote
+// @Success 200 {string} success
+// @router /searchJNoteList [get]
+func (u *NoteController) SearchJNoteList() {
+	key := u.GetString("key")
+	page, _ := u.GetInt("page")
+	list := models.SearchJNote2List(key, page)
 	if list != nil {
 		u.Data["json"] = models.GetJsonResult(list)
 	} else {
