@@ -8,6 +8,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+//http://sj.zol.com.cn/bizhi/p2/
 func init() {
 	InitDataBase()
 	InitLoger()
