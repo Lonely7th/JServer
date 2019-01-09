@@ -47,7 +47,6 @@ func GetUser(phoneNumber string) (u *User) {
 	o := orm.NewOrm()
 	user := new(User)
 	err := o.QueryTable("user").Filter("user_phone", phoneNumber).One(user)
-	//err := o.QueryTable("user").Filter("id",key).All(user)
 	if err != nil {
 		fmt.Println(err)
 		return nil
@@ -113,5 +112,9 @@ func UpdateToken(u *User) (result *User) {
 }
 
 func DeleteUser(uid string) {
+
+}
+
+func InitUser() {
 
 }

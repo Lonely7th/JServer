@@ -33,12 +33,6 @@ type JNote struct {
 	FavoriteId int
 }
 
-type JLable struct {
-	Id    int
-	Lid   string `orm:"size(64)"`
-	Title string `orm:"size(64)"`
-}
-
 type RCategoryNote struct {
 	Id        int
 	Cid       string `orm:"size(64)"`
@@ -62,7 +56,7 @@ type JNoteScore struct {
 }
 
 func init() {
-	orm.RegisterModel(new(JNote), new(JLable), new(RCategoryNote), new(JNoteStar), new(JNoteScore))
+	orm.RegisterModel(new(JNote), new(RCategoryNote), new(JNoteStar), new(JNoteScore))
 }
 
 //添加JNote
@@ -280,18 +274,6 @@ func GetStarNoteList(userId string) *[]JNoteStar {
 		return nil
 	}
 	return noteList
-}
-
-//获取标签列表
-func GetLabelList() *[]JLable {
-	o := orm.NewOrm()
-	labelList := new([]JLable)
-	_, err := o.QueryTable("j_lable").RelatedSel().All(labelList)
-	if err != nil {
-		fmt.Println(err)
-		return nil
-	}
-	return labelList
 }
 
 //获取用户发布列表

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"ApiJServer/colly"
 	"ApiJServer/models"
 	_ "ApiJServer/routers"
 	"crypto/md5"
@@ -21,6 +22,8 @@ func init() {
 	InitDataBase()
 	InitSignFilter()
 	InitLoger()
+	//models.InitLabel()
+	colly.GetJNoteByZol()
 }
 
 func main() {
