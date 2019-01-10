@@ -11,7 +11,6 @@ type JNoteFactory struct {
 	NoteId    string `orm:"pk"` // 唯一标识
 	CreatTime int64  // 创建时间
 	ResPath   string `orm:"size(64)"`  // 图片地址
-	GsResPath string `orm:"size(64)"`  // 高斯模糊图片地址
 	Content   string `orm:"size(128)"` // 主要内容
 
 	Sign     string `orm:"size(128)"` // Md5签名
@@ -23,7 +22,7 @@ func init() {
 }
 
 //添加JNote到Factory
-func AddJNote2Factory(resPath string, gsResPath string, content string) (bool, *JNoteFactory) {
+func AddJNote2Factory(resPath string, sign string, content string) (bool, *JNoteFactory) {
 	note := new(JNoteFactory)
 	CurrentTime := int64(time.Now().UnixNano() / 1e6)
 	note.CreatTime = CurrentTime
@@ -32,7 +31,6 @@ func AddJNote2Factory(resPath string, gsResPath string, content string) (bool, *
 	note.NoteId = NoteId
 	note.Content = content
 	note.ResPath = resPath
-	note.GsResPath = gsResPath
 
 	note.Released = false
 

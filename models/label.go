@@ -20,7 +20,7 @@ func init() {
 func GetLabelList() *[]JLabel {
 	o := orm.NewOrm()
 	labelList := new([]JLabel)
-	_, err := o.QueryTable("j_lable").RelatedSel().All(labelList)
+	_, err := o.QueryTable("j_label").RelatedSel().All(labelList)
 	if err != nil {
 		fmt.Println(err)
 		return nil
