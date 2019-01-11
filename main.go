@@ -1,7 +1,6 @@
 package main
 
 import (
-	"ApiJServer/colly"
 	"ApiJServer/models"
 	_ "ApiJServer/routers"
 	"crypto/md5"
@@ -19,11 +18,17 @@ import (
 const StrMd5Sign = "9b063dfaef3f9deaf4413ffb8f26d247"
 
 func init() {
+	//初始化数据库
 	InitDataBase()
+	//初始化拦截器
 	InitSignFilter()
+	//初始化日志
 	InitLoger()
+	//初始化标签系统(需要更新标签列表时开启)
 	//models.InitLabel()
-	colly.GetJNoteByZol()
+	//models.CreatRandReleaser(1000)
+	//初始化定时器
+	//colly.InitTimer()
 }
 
 func main() {
@@ -76,7 +81,6 @@ var FilterSign = func(ctx *context.Context) {
 	timeStamp := ctx.Input.Query("timeStamp")
 	token := ctx.Input.Query("token")
 	sign := ctx.Input.Query("sign")
-	fmt.Println("timeStamp = " + timeStamp)
 
 	//判断签名是否正确
 	data := []byte(timeStamp + StrMd5Sign + token)

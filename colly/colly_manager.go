@@ -1,16 +1,26 @@
 package colly
 
 import (
+	"ApiJServer/controllers"
+	"ApiJServer/models"
 	"ApiJServer/util"
+	"bytes"
 	"fmt"
 	"github.com/astaxie/beego/orm"
+	"github.com/esimov/stackblur-go"
+	"io"
+	"io/ioutil"
+	"math/rand"
+	"net/http"
+	"os"
 	"time"
 )
 
 type JNoteFactory struct {
-	NoteId    string `orm:"pk"` // 唯一标识
+	Id        int
+	NoteId    string `orm:"size(64)"` // 唯一标识
 	CreatTime int64  // 创建时间
-	ResPath   string `orm:"size(64)"`  // 图片地址
+	ResPath   string `orm:"size(256)"` // 图片地址
 	Content   string `orm:"size(128)"` // 主要内容
 
 	Sign     string `orm:"size(128)"` // Md5签名
@@ -22,40 +32,152 @@ func init() {
 }
 
 //添加JNote到Factory
-func AddJNote2Factory(resPath string, sign string, content string) (bool, *JNoteFactory) {
+func AddJNote2Factory(resPath string, sign string, content string) bool {
 	note := new(JNoteFactory)
-	CurrentTime := int64(time.Now().UnixNano() / 1e6)
-	note.CreatTime = CurrentTime
 
-	NoteId := util.GetCurrentTime() + util.GetRandomString(8)
-	note.NoteId = NoteId
+	currentTime := int64(time.Now().UnixNano() / 1e6)
+	note.CreatTime = currentTime
+
+	noteId := util.GetRandomString(8) + util.GetCurrentTime()
+	note.NoteId = noteId
+
 	note.Content = content
 	note.ResPath = resPath
+	note.Sign = sign
 
 	note.Released = false
 
+	//note := JNoteFactory{NoteId: noteId,CreatTime: currentTime,ResPath: resPath,Content: content,Sign: sign,Released : false}
+
 	o := orm.NewOrm()
-	_, err := o.Insert(note)
-	if err == nil {
-		return true, note
-	} else {
-		fmt.Println(err)
-		return false, nil
+	if created, id, err := o.ReadOrCreate(note, "res_path", "sign"); err == nil {
+		if created {
+			fmt.Println("New Factory:", id)
+		} else {
+			fmt.Println("Get Factory:", id)
+		}
+		return true
 	}
+	return false
 }
 
 //获取JNoteFactory列表
-func GetJNoteByFactory() {
+func ReleaseJNoteByFactory(num int) {
 	o := orm.NewOrm()
 	noteList := new([]JNoteFactory)
 
-	_, err := o.QueryTable("j_note_factory").Filter("released", false).OrderBy("-creat_time").RelatedSel().All(noteList)
+	start := rand.Intn(10000)
+	_, err := o.QueryTable("j_note_factory").Filter("released", false).Limit(num, start).RelatedSel().All(noteList)
 	if err == nil {
 		for _, item := range *noteList {
-			fmt.Println(item.NoteId)
-			// 开始发布
+			fmt.Println(item)
+			//随机发布人信息
+			releaser := models.GetRandReleaser()
+			if releaser != nil {
+				//加载图片
+				picRes, gsRes, err := LoadNetPic(releaser.UserNo, item.ResPath)
+				if err == nil {
+					//随机NoteType
+					ntype := GetRandNoteType()
+					//随机限制长度
+					limit := GetRandLimitNum()
+					//随机裁剪格式
+					format := GetRandFormat()
+					//随机标签
+					label1, label2, label3, labelTitle1, labelTitle2, labelTitle3 := GetRandLabels(item.Content)
+					models.AddJNote("我发布了一条新动态，快来点击看看吧~", releaser.UserNo, picRes, gsRes, ntype, limit,
+						false, format, label1, label2, label3, labelTitle1, labelTitle2, labelTitle3)
+				} else {
+					fmt.Println(err)
+				}
+			}
 		}
 	} else {
 		fmt.Println(err)
 	}
+}
+
+//获取随机标签
+func GetRandLabels(content string) (int, int, int, string, string, string) {
+	return 33, 0, 0, "妖精的尾巴", "", ""
+}
+
+//保存图片到本地
+func LoadNetPic(releaser string, imagPath string) (r string, g string, e error) {
+	filePath := releaser + util.GetCurrentTime() + ".jpg"        // 原图路径
+	gaussianPath := releaser + util.GetCurrentTime() + "-gs.jpg" // 模糊图路径
+
+	resp, _ := http.Get(imagPath)
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	//保存当前图片
+	outRes, _ := os.Create(controllers.PicDir + filePath)
+	_, err := io.Copy(outRes, bytes.NewReader(body))
+	if err == nil {
+		//保存高斯模糊后的图片
+		src, _ := util.LoadImage(controllers.PicDir + filePath)
+
+		var done = make(chan struct{}, 25)
+		_ = util.SaveImage(controllers.PicDir+gaussianPath, stackblur.Process(src, 25, done))
+	}
+
+	return controllers.ImagePath + filePath, controllers.ImagePath + gaussianPath, err
+}
+
+//获取随机裁剪格式
+func GetRandFormat() string {
+	a := rand.Intn(10)
+	var format string
+	if a < 1 { //10%
+		format = "4-3"
+	} else if a < 3 { //20%
+		format = "4-4"
+	} else if a < 8 { //50%
+		format = "6-4"
+	} else { //20%
+		format = "6-6"
+	}
+	return format
+}
+
+//获取随机NoteType
+func GetRandNoteType() int {
+	a := rand.Intn(1)
+	var ntype int
+	switch a {
+	case 0:
+		ntype = 1
+		break
+	case 1:
+		ntype = 2
+		break
+	}
+	return ntype
+}
+
+//获取随机限制长度
+func GetRandLimitNum() int {
+	a := rand.Intn(6)
+	var num int
+	switch a {
+	case 0:
+		num = 45
+		break
+	case 1:
+		num = 90
+		break
+	case 2:
+		num = 120
+		break
+	case 3:
+		num = 200
+		break
+	case 4:
+		num = 300
+		break
+	case 5:
+		num = 500
+		break
+	}
+	return num
 }

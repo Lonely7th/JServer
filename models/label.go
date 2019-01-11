@@ -30,7 +30,6 @@ func GetLabelList() *[]JLabel {
 
 //初始化标签列表
 func InitLabel() {
-	fmt.Println("Init Label...")
 	//读取数据
 	xlsx, err := excelize.OpenFile("./conf/label.xlsx")
 	if err != nil {

@@ -4,6 +4,8 @@ import (
 	"ApiJServer/util"
 	"fmt"
 	"github.com/astaxie/beego/orm"
+	"math/rand"
+	"strconv"
 	"time"
 )
 
@@ -21,6 +23,7 @@ func init() {
 	orm.RegisterModel(new(User))
 }
 
+//添加新用户
 func AddUser(phone string) (result bool, u *User) {
 	user := new(User)
 	user.UserNo = util.GetRandomString(24)
@@ -40,6 +43,7 @@ func AddUser(phone string) (result bool, u *User) {
 	}
 }
 
+//获取用户信息
 func GetUser(phoneNumber string) (u *User) {
 	if util.Validate(phoneNumber) {
 		return nil
@@ -54,6 +58,7 @@ func GetUser(phoneNumber string) (u *User) {
 	return user
 }
 
+//获取用户信息
 func GetUserById(Id string) *User {
 	o := orm.NewOrm()
 	user := new(User)
@@ -65,6 +70,7 @@ func GetUserById(Id string) *User {
 	return user
 }
 
+//修改用户信息
 func UpdateUserInfo(uid string, ctype int, content string) bool {
 	o := orm.NewOrm()
 	user := GetUserById(uid)
@@ -89,6 +95,7 @@ func UpdateUserInfo(uid string, ctype int, content string) bool {
 	}
 }
 
+//登录
 func Login(phoneNumber string) (u *User) {
 	user := GetUser(phoneNumber)
 	if user != nil {
@@ -102,6 +109,7 @@ func Login(phoneNumber string) (u *User) {
 	}
 }
 
+//刷新token
 func UpdateToken(u *User) (result *User) {
 	o := orm.NewOrm()
 	u.UserToken = util.GetRandomString(16)
@@ -117,4 +125,42 @@ func DeleteUser(uid string) {
 
 func InitUser() {
 
+}
+
+//生成随机发布人
+func CreatRandReleaser(num int) {
+	var basePhoneNumber = 4004160000
+	for i := 0; i < num; i++ {
+		user := GetUser(strconv.Itoa(basePhoneNumber))
+		if user != nil {
+			UpdateToken(user)
+		} else {
+			user := new(User)
+			user.UserNo = util.GetRandomString(24)
+			user.UserName = ""
+			user.UserToken = util.GetRandomString(16)
+			user.UserPhone = strconv.Itoa(basePhoneNumber)
+			user.NameHead = ""
+			user.NameCity = ""
+			user.CreatTime = int64(time.Now().UnixNano() / 1e6)
+
+			o := orm.NewOrm()
+			_, _ = o.Insert(user)
+		}
+		basePhoneNumber++
+	}
+}
+
+//获取随机发布人
+func GetRandReleaser() *User {
+	o := orm.NewOrm()
+	user := new(User)
+
+	start := rand.Intn(1000)
+	err := o.QueryTable("j_note_factory").Filter("user_phone__contains", "400416").Limit(1, start).RelatedSel().One(user)
+	if err == nil {
+		return user
+	} else {
+		return nil
+	}
 }
