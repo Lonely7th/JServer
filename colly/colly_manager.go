@@ -87,6 +87,9 @@ func ReleaseJNoteByFactory(num int) {
 					label1, label2, label3, labelTitle1, labelTitle2, labelTitle3 := GetRandLabels(item.Content)
 					models.AddJNote("我发布了一条新动态，快来点击看看吧~", releaser.UserNo, picRes, gsRes, ntype, limit,
 						false, format, label1, label2, label3, labelTitle1, labelTitle2, labelTitle3)
+					//将工厂设置成已发布
+					//item.Released = true
+					//o.Update(item)
 				} else {
 					fmt.Println(err)
 				}
@@ -99,7 +102,41 @@ func ReleaseJNoteByFactory(num int) {
 
 //获取随机标签
 func GetRandLabels(content string) (int, int, int, string, string, string) {
-	return 33, 0, 0, "妖精的尾巴", "", ""
+	var label1, label2, label3 int
+	var labelTitle1, labelTitle2, labelTitle3 string
+	o := orm.NewOrm()
+
+	rs := []rune(content)
+	rl := len(rs)
+	for i := 0; i < rl; i++ {
+		for j := rl; j > i; j-- {
+			if j-i > 1 {
+				key := string(rs[i:j])
+
+				label := new(models.JLabel)
+				err := o.QueryTable("j_label").Filter("title", key).One(label)
+				if err == nil && label != nil {
+					fmt.Println("匹配到", label)
+					if labelTitle1 == "" {
+						label1 = label.Id
+						labelTitle1 = label.Title
+					} else if labelTitle2 == "" {
+						label2 = label.Id
+						labelTitle2 = label.Title
+					} else if labelTitle3 == "" {
+						label3 = label.Id
+						labelTitle3 = label.Title
+					}
+					break
+				}
+			}
+		}
+	}
+	if labelTitle1 != "" {
+		return label1, label2, label3, labelTitle1, labelTitle2, labelTitle3
+	} else {
+		return 451, 0, 0, "其它", "", ""
+	}
 }
 
 //保存图片到本地
@@ -118,7 +155,11 @@ func LoadNetPic(releaser string, imagPath string) (r string, g string, e error) 
 		src, _ := util.LoadImage(util.PicDir + filePath)
 
 		var done = make(chan struct{}, 25)
-		_ = util.SaveImage(util.PicDir+gaussianPath, stackblur.Process(src, 25, done))
+		err1 := util.SaveImage(util.PicDir+gaussianPath, stackblur.Process(src, 20, done))
+
+		if err1 != nil {
+			fmt.Println(err1)
+		}
 	}
 
 	return filePath, gaussianPath, err
