@@ -11,9 +11,6 @@ type UserController struct {
 	beego.Controller
 }
 
-var PicDir = "D:/go_server_src/"
-var ImagePath = "http://172.31.71.35:8089/"
-
 // @Title Login
 // @Description Logs user into the system
 // @Param	phoneNumber		query 	string	true		"The phoneNumber for login"
@@ -66,7 +63,7 @@ func (u *UserController) ChangeHead() {
 	src, _, err := u.GetFile("res")
 	userNo := u.GetString("user_no")
 	filePath := userNo + util.GetCurrentTime() + ".jpg"
-	picPath := PicDir + filePath // 图片保存的路径
+	picPath := util.PicDir + filePath // 图片保存的路径
 
 	if err != nil {
 		u.Data["json"] = models.GetErrorResult("404", "加载文件失败")
@@ -75,7 +72,7 @@ func (u *UserController) ChangeHead() {
 		_ = u.SaveToFile("res", picPath)
 
 		if models.UpdateUserInfo(userNo, 2, filePath) {
-			u.Data["json"] = models.GetJsonResult(ImagePath + filePath)
+			u.Data["json"] = models.GetJsonResult(util.ImagePath + filePath)
 		} else {
 			u.Data["json"] = models.GetErrorResult("403", "保存数据失败")
 		}
@@ -92,7 +89,7 @@ func (u *UserController) ChangeHead() {
 func (u *UserController) GetUserInfo() {
 	userNo := u.GetString("user_no")
 	user := models.GetUserById(userNo)
-	user.NameHead = ImagePath + user.NameHead
+	user.NameHead = util.ImagePath + user.NameHead
 	if user != nil {
 		u.Data["json"] = models.GetJsonResult(user)
 	} else {

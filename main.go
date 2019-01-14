@@ -1,6 +1,7 @@
 package main
 
 import (
+	"ApiJServer/colly"
 	"ApiJServer/models"
 	_ "ApiJServer/routers"
 	"crypto/md5"
@@ -26,9 +27,8 @@ func init() {
 	InitLoger()
 	//初始化标签系统(需要更新标签列表时开启)
 	//models.InitLabel()
-	//models.CreatRandReleaser(1000)
 	//初始化定时器
-	//colly.InitTimer()
+	colly.InitTimer()
 }
 
 func main() {

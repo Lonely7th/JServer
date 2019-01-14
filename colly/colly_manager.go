@@ -1,7 +1,6 @@
 package colly
 
 import (
-	"ApiJServer/controllers"
 	"ApiJServer/models"
 	"ApiJServer/util"
 	"bytes"
@@ -66,6 +65,7 @@ func ReleaseJNoteByFactory(num int) {
 	o := orm.NewOrm()
 	noteList := new([]JNoteFactory)
 
+	rand.Seed(time.Now().UnixNano())
 	start := rand.Intn(10000)
 	_, err := o.QueryTable("j_note_factory").Filter("released", false).Limit(num, start).RelatedSel().All(noteList)
 	if err == nil {
@@ -111,17 +111,17 @@ func LoadNetPic(releaser string, imagPath string) (r string, g string, e error) 
 	body, _ := ioutil.ReadAll(resp.Body)
 
 	//保存当前图片
-	outRes, _ := os.Create(controllers.PicDir + filePath)
+	outRes, _ := os.Create(util.PicDir + filePath)
 	_, err := io.Copy(outRes, bytes.NewReader(body))
 	if err == nil {
 		//保存高斯模糊后的图片
-		src, _ := util.LoadImage(controllers.PicDir + filePath)
+		src, _ := util.LoadImage(util.PicDir + filePath)
 
 		var done = make(chan struct{}, 25)
-		_ = util.SaveImage(controllers.PicDir+gaussianPath, stackblur.Process(src, 25, done))
+		_ = util.SaveImage(util.PicDir+gaussianPath, stackblur.Process(src, 25, done))
 	}
 
-	return controllers.ImagePath + filePath, controllers.ImagePath + gaussianPath, err
+	return filePath, gaussianPath, err
 }
 
 //获取随机裁剪格式
@@ -142,7 +142,7 @@ func GetRandFormat() string {
 
 //获取随机NoteType
 func GetRandNoteType() int {
-	a := rand.Intn(1)
+	a := rand.Intn(2)
 	var ntype int
 	switch a {
 	case 0:
@@ -161,19 +161,19 @@ func GetRandLimitNum() int {
 	var num int
 	switch a {
 	case 0:
-		num = 45
-		break
-	case 1:
 		num = 90
 		break
-	case 2:
+	case 1:
 		num = 120
 		break
+	case 2:
+		num = 180
+		break
 	case 3:
-		num = 200
+		num = 240
 		break
 	case 4:
-		num = 300
+		num = 360
 		break
 	case 5:
 		num = 500

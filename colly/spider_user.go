@@ -2,9 +2,11 @@ package colly
 
 import (
 	"fmt"
+	"github.com/Luxurioust/excelize"
 	"github.com/astaxie/beego/orm"
 	"github.com/gocolly/colly"
 	"log"
+	"os"
 	"strconv"
 )
 
@@ -18,6 +20,26 @@ func init() {
 }
 
 const WYGXBaseUrl = "https://www.woyaogexing.com/touxiang"
+
+func UpdateUserHead2Excel() {
+	xlsx, err := excelize.OpenFile("./conf/user.xlsx")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	o := orm.NewOrm()
+	userHead := new([]UserHead)
+
+	_, _ = o.QueryTable("user_head").RelatedSel().All(userHead)
+	for i, item := range *userHead {
+		fmt.Println(i, item)
+		if i > 0 {
+			xlsx.SetCellValue("Sheet1", "B"+strconv.Itoa(i), "http://"+item.Path)
+		}
+	}
+	xlsx.Save()
+}
 
 func GetUserInfoByWYGX() {
 	c := colly.NewCollector()

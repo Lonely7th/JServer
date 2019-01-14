@@ -49,7 +49,7 @@ func (u *NoteController) AddJNote() {
 	result, note := models.AddJNote(content, releaser, filePath, gaussianPath, jtype, limitNum, hideUser, cropFormat, label1, label2, label3, labelTitle1, labelTitle2, labelTitle3)
 	if result == true {
 		//保存图片
-		picPath := PicDir + filePath // 图片保存的路径
+		picPath := util.PicDir + filePath // 图片保存的路径
 		defer resData.Close()
 		_ = u.SaveToFile("res", picPath)
 
@@ -59,11 +59,11 @@ func (u *NoteController) AddJNote() {
 			fmt.Println(err)
 		} else {
 			var done = make(chan struct{}, 25)
-			_ = util.SaveImage(PicDir+gaussianPath, stackblur.Process(src, 25, done))
+			_ = util.SaveImage(util.PicDir+gaussianPath, stackblur.Process(src, 25, done))
 		}
 
-		note.ResPath = ImagePath + filePath
-		note.GsResPath = ImagePath + gaussianPath
+		note.ResPath = util.ImagePath + filePath
+		note.GsResPath = util.ImagePath + gaussianPath
 		u.Data["json"] = models.GetJsonResult(note)
 	} else {
 		u.Data["json"] = models.GetErrorResult("403", "保存失败")
@@ -81,9 +81,9 @@ func (u *NoteController) GetJNoteList() {
 	page, _ := u.GetInt("page")
 	list := models.GetJNoteList(category, page)
 	for _, item := range *list {
-		item.ResPath = ImagePath + item.ResPath
+		item.ResPath = util.ImagePath + item.ResPath
 		item.Releaser.UserToken = ""
-		item.Releaser.NameHead = ImagePath + item.Releaser.NameHead
+		item.Releaser.NameHead = util.ImagePath + item.Releaser.NameHead
 	}
 	if list != nil {
 		u.Data["json"] = models.GetJsonResult(list)
@@ -103,9 +103,9 @@ func (u *NoteController) GetJNoteDetails() {
 	userId := u.GetString("user_id")
 	note := models.GetJNoteDetails(noteId, userId)
 	if note != nil {
-		note.ResPath = ImagePath + note.ResPath
+		note.ResPath = util.ImagePath + note.ResPath
 		note.Releaser.UserToken = ""
-		note.Releaser.NameHead = ImagePath + note.Releaser.NameHead
+		note.Releaser.NameHead = util.ImagePath + note.Releaser.NameHead
 		u.Data["json"] = models.GetJsonResult(note)
 	} else {
 		u.Data["json"] = models.GetErrorResult("403", "失败")

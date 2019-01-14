@@ -2,9 +2,15 @@ package models
 
 import (
 	"ApiJServer/util"
+	"bytes"
 	"fmt"
+	"github.com/Luxurioust/excelize"
 	"github.com/astaxie/beego/orm"
+	"io"
+	"io/ioutil"
 	"math/rand"
+	"net/http"
+	"os"
 	"strconv"
 	"time"
 )
@@ -129,18 +135,33 @@ func InitUser() {
 
 //生成随机发布人
 func CreatRandReleaser(num int) {
+	xlsx, err := excelize.OpenFile("./conf/user.xlsx")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
 	var basePhoneNumber = 4004160000
-	for i := 0; i < num; i++ {
+	for i := 1; i < num; i++ {
 		user := GetUser(strconv.Itoa(basePhoneNumber))
 		if user != nil {
 			UpdateToken(user)
 		} else {
+			userNo := util.GetRandomString(24)
+			//加载图片
+			filePath := userNo + util.GetCurrentTime() + ".jpg" //图片路径
+			fmt.Println(xlsx.GetCellValue("Sheet1", "B"+strconv.Itoa(i)))
+			resp, _ := http.Get(xlsx.GetCellValue("Sheet1", "B"+strconv.Itoa(i)))
+			body, _ := ioutil.ReadAll(resp.Body)
+			outRes, _ := os.Create(util.PicDir + filePath)
+			_, _ = io.Copy(outRes, bytes.NewReader(body))
+
 			user := new(User)
-			user.UserNo = util.GetRandomString(24)
-			user.UserName = ""
+			user.UserNo = userNo
+			user.UserName = xlsx.GetCellValue("Sheet1", "A"+strconv.Itoa(i))
 			user.UserToken = util.GetRandomString(16)
 			user.UserPhone = strconv.Itoa(basePhoneNumber)
-			user.NameHead = ""
+			user.NameHead = filePath
 			user.NameCity = ""
 			user.CreatTime = int64(time.Now().UnixNano() / 1e6)
 
@@ -153,11 +174,14 @@ func CreatRandReleaser(num int) {
 
 //获取随机发布人
 func GetRandReleaser() *User {
+	rand.Seed(time.Now().UnixNano())
 	o := orm.NewOrm()
 	user := new(User)
 
 	start := rand.Intn(1000)
-	err := o.QueryTable("j_note_factory").Filter("user_phone__contains", "400416").Limit(1, start).RelatedSel().One(user)
+	fmt.Println(start)
+	err := o.QueryTable("user").Filter("user_phone__contains", "400416").Limit(1, start).RelatedSel().One(user)
+	fmt.Println(user)
 	if err == nil {
 		return user
 	} else {
