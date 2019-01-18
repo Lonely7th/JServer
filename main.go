@@ -22,7 +22,7 @@ func init() {
 	//初始化数据库
 	InitDataBase()
 	//初始化拦截器
-	InitSignFilter()
+	//InitSignFilter()
 	//初始化日志
 	InitLoger()
 	//初始化标签系统(需要更新标签列表时开启)

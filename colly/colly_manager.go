@@ -88,8 +88,8 @@ func ReleaseJNoteByFactory(num int) {
 					models.AddJNote("我发布了一条新动态，快来点击看看吧~", releaser.UserNo, picRes, gsRes, ntype, limit,
 						false, format, label1, label2, label3, labelTitle1, labelTitle2, labelTitle3)
 					//将工厂设置成已发布
-					//item.Released = true
-					//o.Update(item)
+					item.Released = true
+					o.Update(&item)
 				} else {
 					fmt.Println(err)
 				}
@@ -116,7 +116,6 @@ func GetRandLabels(content string) (int, int, int, string, string, string) {
 				label := new(models.JLabel)
 				err := o.QueryTable("j_label").Filter("title", key).One(label)
 				if err == nil && label != nil {
-					fmt.Println("匹配到", label)
 					if labelTitle1 == "" {
 						label1 = label.Id
 						labelTitle1 = label.Title
@@ -144,22 +143,30 @@ func LoadNetPic(releaser string, imagPath string) (r string, g string, e error) 
 	filePath := releaser + util.GetCurrentTime() + ".jpg"        // 原图路径
 	gaussianPath := releaser + util.GetCurrentTime() + "-gs.jpg" // 模糊图路径
 
-	resp, _ := http.Get(imagPath)
-	body, _ := ioutil.ReadAll(resp.Body)
+	res, err := http.Get(imagPath)
+	if err != nil {
+		fmt.Println("获取网络资源失败！")
+		return "", "", err
+	}
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
 
 	//保存当前图片
 	outRes, _ := os.Create(util.PicDir + filePath)
-	_, err := io.Copy(outRes, bytes.NewReader(body))
+	_, err = io.Copy(outRes, bytes.NewReader(body))
 	if err == nil {
 		//保存高斯模糊后的图片
-		src, _ := util.LoadImage(util.PicDir + filePath)
+		src, err := util.LoadImage(util.PicDir + filePath)
+		if err == nil {
+			var done = make(chan struct{}, 20)
+			err = util.SaveImage(util.PicDir+gaussianPath, stackblur.Process(src, 20, done))
 
-		var done = make(chan struct{}, 25)
-		err1 := util.SaveImage(util.PicDir+gaussianPath, stackblur.Process(src, 20, done))
-
-		if err1 != nil {
-			fmt.Println(err1)
+			if err != nil {
+				fmt.Println(err)
+			}
 		}
+	} else {
+		fmt.Println(err)
 	}
 
 	return filePath, gaussianPath, err

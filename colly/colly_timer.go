@@ -11,7 +11,7 @@ func InitTimer() {
 
 //启动分发器定时器
 func StartReleaseTimer() {
-	ticker := time.NewTicker(300 * time.Second)
+	ticker := time.NewTicker(100 * time.Second)
 
 	for {
 		select {

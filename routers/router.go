@@ -30,6 +30,11 @@ func init() {
 				&controllers.NoteController{},
 			),
 		),
+		beego.NSNamespace("/v4",
+			beego.NSInclude(
+				&controllers.SettingController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }
