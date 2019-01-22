@@ -23,10 +23,18 @@ type User struct {
 	NameHead  string `orm:"size(128)"`
 	NameCity  string `orm:"size(32)"`
 	CreatTime int64
+	IsFollow  bool // 是否已经关注
+}
+
+type UserFollow struct {
+	Id        int
+	UserNo    string `orm:"size(64)"` // 关注人
+	Follower  *User  `orm:"rel(fk)"`  // 被关注人
+	CreatTime int64  // 关注时间
 }
 
 func init() {
-	orm.RegisterModel(new(User))
+	orm.RegisterModel(new(User), new(UserFollow))
 }
 
 //添加新用户
@@ -65,10 +73,10 @@ func GetUser(phoneNumber string) (u *User) {
 }
 
 //获取用户信息
-func GetUserById(Id string) *User {
+func getUserById(userNo string) *User {
 	o := orm.NewOrm()
 	user := new(User)
-	err := o.QueryTable("user").Filter("user_no", Id).One(user)
+	err := o.QueryTable("user").Filter("user_no", userNo).One(user)
 	if err != nil {
 		fmt.Println(err)
 		return nil
@@ -76,10 +84,30 @@ func GetUserById(Id string) *User {
 	return user
 }
 
+//获取用户信息
+func GetUserById(userNo string, followNo string) *User {
+	o := orm.NewOrm()
+	user := new(User)
+	err := o.QueryTable("user").Filter("user_no", userNo).One(user)
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+	//判断当前用户是否已经关注
+	userFollow := new(UserFollow)
+	err2 := o.QueryTable("user_follow").Filter("user_no", followNo).Filter("follower", userNo).One(userFollow)
+	if err2 == nil {
+		user.IsFollow = true
+	} else {
+		user.IsFollow = false
+	}
+	return user
+}
+
 //修改用户信息
 func UpdateUserInfo(uid string, ctype int, content string) bool {
 	o := orm.NewOrm()
-	user := GetUserById(uid)
+	user := getUserById(uid)
 	if user != nil {
 		switch ctype {
 		case 0:
@@ -126,10 +154,6 @@ func UpdateToken(u *User) (result *User) {
 }
 
 func DeleteUser(uid string) {
-
-}
-
-func InitUser() {
 
 }
 
@@ -187,4 +211,47 @@ func GetRandReleaser() *User {
 	} else {
 		return nil
 	}
+}
+
+//添加关注
+func AddFollower(userNo string, follow string) (bool, *UserFollow) {
+	userFollow := new(UserFollow)
+	userFollow.UserNo = userNo
+	userFollow.CreatTime = int64(time.Now().UnixNano() / 1e6)
+	userFollow.Follower = getUserById(follow)
+
+	o := orm.NewOrm()
+	_, err := o.Insert(userFollow)
+	if err == nil {
+		return true, userFollow
+	} else {
+		return false, userFollow
+	}
+}
+
+//取消关注
+func DeleteFollower(userNo string, follow string) bool {
+	userFollow := new(UserFollow)
+	o := orm.NewOrm()
+	err1 := o.QueryTable("user_follow").Filter("user_no", userNo).Filter("follower_id", follow).One(userFollow)
+
+	if err1 == nil {
+		_, err2 := o.Delete(userFollow)
+		if err2 == nil {
+			return true
+		}
+	}
+	return false
+}
+
+//获取关注列表
+func GetFollowList(userNo string) *[]UserFollow {
+	o := orm.NewOrm()
+	followList := new([]UserFollow)
+	_, err := o.QueryTable("user_follow").Filter("user_no", userNo).OrderBy("-creat_time").RelatedSel().All(followList)
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+	return followList
 }

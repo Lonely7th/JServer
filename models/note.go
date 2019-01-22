@@ -76,7 +76,7 @@ func AddJNote(content string, releaser string, resPath string, gsResPath string,
 
 	NoteId := releaser + util.GetCurrentTime()
 	note.NoteId = NoteId
-	note.Releaser = GetUserById(releaser)
+	note.Releaser = getUserById(releaser)
 	note.ResPath = resPath
 	note.GsResPath = gsResPath
 	note.Label1 = label1
