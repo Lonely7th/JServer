@@ -4,6 +4,8 @@ import (
 	"ApiJServer/util"
 	"fmt"
 	"github.com/astaxie/beego/orm"
+	"github.com/garyburd/redigo/redis"
+	"strconv"
 	"time"
 )
 
@@ -30,7 +32,8 @@ type JNote struct {
 	HideUser   bool   // 匿名发布
 	CropFormat string `orm:"size(16)"`
 
-	FavoriteId int
+	FavoriteId  int
+	SuccessRate int // 成功率
 }
 
 type RCategoryNote struct {
@@ -121,10 +124,9 @@ func AddJNote(content string, releaser string, resPath string, gsResPath string,
 }
 
 const PageSize int = 10
-const DisplayHot int = 1000
 
 //获取JNote列表
-func GetJNoteList(categroy string, page int) *[]JNote {
+func GetJNoteList(categroy string, phoneSign string, page int) *[]JNote {
 	o := orm.NewOrm()
 	noteList := new([]JNote)
 	categroyList := new([]RCategoryNote)
@@ -135,10 +137,33 @@ func GetJNoteList(categroy string, page int) *[]JNote {
 			fmt.Println(err)
 		}
 		break
-	case "1":
-		_, err := o.QueryTable("j_note").Filter("display_num__gte", DisplayHot).OrderBy("-creat_time").RelatedSel().Limit(PageSize, (page-1)*PageSize).All(noteList)
+	case "1": // 推荐
+		redisManager, err := redis.Dial("tcp", "127.0.0.1:6379")
+		if err != nil {
+			fmt.Println("Connect to redis error", err)
+			return noteList
+		}
+		defer redisManager.Close()
+
+		var lastTime int64
+		keyExit, err := redis.Bool(redisManager.Do("EXISTS", phoneSign))
+		if err == nil && keyExit {
+			value, err := redis.String(redisManager.Do("GET", phoneSign))
+			if err == nil {
+				lastTime, _ = strconv.ParseInt(value, 10, 64)
+			}
+		} else {
+			lastTime = 0
+		}
+		_, err = o.QueryTable("j_note").Filter("creat_time__gte", lastTime).OrderBy("creat_time").RelatedSel().Limit(PageSize, (page-1)*PageSize).All(noteList)
 		if err != nil {
 			fmt.Println(err)
+		} else {
+			for index, item := range *noteList {
+				if index == len(*noteList)-1 {
+					_, err = redisManager.Do("SET", phoneSign, item.CreatTime)
+				}
+			}
 		}
 		break
 	case "2":

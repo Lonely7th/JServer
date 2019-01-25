@@ -79,7 +79,8 @@ func (u *NoteController) AddJNote() {
 func (u *NoteController) GetJNoteList() {
 	category := u.GetString("categroy")
 	page, _ := u.GetInt("page")
-	list := models.GetJNoteList(category, page)
+	phoneSign := u.GetString("phoneSign")
+	list := models.GetJNoteList(category, phoneSign, page)
 	for _, item := range *list {
 		item.ResPath = util.ImagePath + item.ResPath
 		item.Releaser.UserToken = ""
