@@ -6,7 +6,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/astaxie/beego/orm"
-	"github.com/esimov/stackblur-go"
+	"github.com/disintegration/imaging"
 	"io"
 	"io/ioutil"
 	"math/rand"
@@ -157,10 +157,12 @@ func LoadNetPic(releaser string, imagPath string) (r string, g string, e error) 
 	if err == nil {
 		//保存高斯模糊后的图片
 		src, err := util.LoadImage(util.PicDir + filePath)
+		//生成缩略图
+		image := imaging.Resize(src, 80, 120, imaging.Lanczos)
 		if err == nil {
-			var done = make(chan struct{}, 20)
-			err = util.SaveImage(util.PicDir+gaussianPath, stackblur.Process(src, 20, done))
-
+			//var done = make(chan struct{}, 20)
+			//err = util.SaveImage(util.PicDir+gaussianPath, stackblur.Process(image, 20, done))
+			err = util.SaveImage(util.PicDir+gaussianPath, image)
 			if err != nil {
 				fmt.Println(err)
 			}

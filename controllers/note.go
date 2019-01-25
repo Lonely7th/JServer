@@ -5,7 +5,7 @@ import (
 	"ApiJServer/util"
 	"fmt"
 	"github.com/astaxie/beego"
-	"github.com/esimov/stackblur-go"
+	"github.com/disintegration/imaging"
 )
 
 type NoteController struct {
@@ -55,11 +55,14 @@ func (u *NoteController) AddJNote() {
 
 		//保存高斯模糊后的图片
 		src, err := util.LoadImage(picPath)
+		//生成缩略图
+		image := imaging.Resize(src, 80, 120, imaging.Lanczos)
 		if err != nil {
 			fmt.Println(err)
 		} else {
-			var done = make(chan struct{}, 25)
-			_ = util.SaveImage(util.PicDir+gaussianPath, stackblur.Process(src, 25, done))
+			//var done = make(chan struct{}, 25)
+			//_ = util.SaveImage(util.PicDir+gaussianPath, stackblur.Process(image, 25, done))
+			err = util.SaveImage(util.PicDir+gaussianPath, image)
 		}
 
 		note.ResPath = util.ImagePath + filePath
