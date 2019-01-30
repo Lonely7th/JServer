@@ -19,16 +19,16 @@ func NoteSuccessAnalysisSystem() {
 			if item.SuccessRate == 0 {
 				item.SuccessRate = rand.Intn(100)
 			} else {
-				a := rand.Intn(10)
+				a := rand.Intn(5)
 				event := rand.Intn(2)
 				switch event {
 				case 0: //+
-					if item.SuccessRate+a < 100 {
+					if item.SuccessRate+a < 85 {
 						item.SuccessRate += a
 					}
 					break
 				case 1: //-
-					if item.SuccessRate-a > 0 {
+					if item.SuccessRate-a > 15 {
 						item.SuccessRate -= a
 					}
 					break
