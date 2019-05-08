@@ -24,6 +24,10 @@
         <method importPath="strings" receiver="*Builder" name="WriteRune" />
         <method importPath="math/rand" receiver="*Rand" name="Read" />
         <method importPath="mime/multipart" receiver="File" name="Close" />
+        <method importPath="github.com/astaxie/beego/logs" receiver="*BeeLogger" name="SetLogger" />
+        <method importPath="github.com/astaxie/beego/orm" receiver="Ormer" name="Update" />
+        <method importPath="github.com/astaxie/beego/context" receiver="*BeegoOutput" name="Body" />
+        <method importPath="github.com/garyburd/redigo/redis" receiver="Conn" name="Close" />
       </methods>
     </inspection_tool>
   </profile>

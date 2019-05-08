@@ -182,11 +182,11 @@ func GetRandFormat() string {
 	var format string
 	if a < 1 { //10%
 		format = "4-3"
-	} else if a < 3 { //20%
+	} else if a < 2 { //10%
 		format = "4-4"
-	} else if a < 8 { //50%
+	} else if a < 7 { //50%
 		format = "6-4"
-	} else { //20%
+	} else { //30%
 		format = "6-6"
 	}
 	return format
@@ -213,22 +213,22 @@ func GetRandLimitNum() int {
 	var num int
 	switch a {
 	case 0:
-		num = 90
-		break
-	case 1:
 		num = 120
 		break
-	case 2:
+	case 1:
 		num = 180
 		break
-	case 3:
+	case 2:
 		num = 240
 		break
-	case 4:
+	case 3:
 		num = 360
 		break
+	case 4:
+		num = 480
+		break
 	case 5:
-		num = 500
+		num = 600
 		break
 	}
 	return num
